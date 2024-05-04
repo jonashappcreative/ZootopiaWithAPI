@@ -1,4 +1,5 @@
 import json
+
 filepath = "animals_data.json"
 
 
@@ -24,15 +25,16 @@ def get_animal_information(animals_data, number):
     animal = animals_data[number]
     name = animal["name"]
     diet = animal["characteristics"]["diet"]
-    locations = animal["locations"]     # may result in a list
-    locations = " and ".join(locations)    # makes list to a string of locations
+    locations = animal["locations"]  # may result in a list
+    locations = " and ".join(locations)  # makes list to a string of locations
 
     try:
         animal_type = animal["characteristics"]["type"]
         return name, diet, locations, animal_type
 
     except KeyError:
-        return name, diet, locations
+        animal_type = "Empty"
+        return name, diet, locations, animal_type
 
 
 def serialize_animal(animals_processed):
@@ -43,27 +45,18 @@ def serialize_animal(animals_processed):
     :return: html string of the serializes animal
     """
     output_html = ''
+    name, diet, locations, animal_type = animals_processed
 
-    if len(animals_processed) == 4:
-        name, diet, locations, animal_type = animals_processed
+    output_html += f'<li class="cards__item">\n'
+    output_html += f'<div class="card__title">{name}</div>'
+    output_html += f'<p class="card__text">\n'
+    output_html += f"<strong>Location(s):</strong> {locations}<br/>\n"
 
-        output_html += f'<li class="cards__item">\n'
-        output_html += f'<div class="card__title">{name}</div>'
-        output_html += f'<p class="card__text">\n'
-        output_html += f"<strong>Location(s):</strong> {locations}<br/>\n"
+    if animal_type != "Empty":
         output_html += f"<strong>Type:</strong> {animal_type}<br/>\n"
-        output_html += f"<strong>Diet:</strong> {diet}\n"
-        output_html += f'</li>\n\n'
 
-    elif len(animals_processed) == 3:
-        name, diet, locations = animals_processed
-
-        output_html += f'<li class="cards__item">\n'
-        output_html += f'<div class="card__title">{name}</div>'
-        output_html += f'<p class="card__text">\n'
-        output_html += f"<strong>Location(s):</strong> {locations}<br/>\n"
-        output_html += f"<strong>Diet:</strong> {diet}\n"
-        output_html += f'</li>\n\n'
+    output_html += f"<strong>Diet:</strong> {diet}\n"
+    output_html += f'</li>\n\n'
 
     return output_html
 
