@@ -1,6 +1,24 @@
 import json
+import requests
+import os
 
 filepath = "animals_data.json"
+API_KEY = "wbvM4JFhbZZA1fhJnftgdv6F59dpO1sFkqBkvn9d"
+
+
+def request_animal_search(search_item):
+    """
+    Executes the API Search for the Search Item
+    :param search_item: A string by the user
+    :return: The API Output.
+    """
+    api_url = 'https://api.api-ninjas.com/v1/animals?name={}'.format(search_item)
+    response = requests.get(api_url, headers={'X-Api-Key': API_KEY})
+    if response.status_code == requests.codes.ok:
+        print(response.json())
+        return response.json()
+    else:
+        print("Error:", response.status_code, response.text)
 
 
 def load_data(file):
@@ -27,15 +45,18 @@ def get_animal_information(animals_data, number):
     diet = animal["characteristics"]["diet"]
     locations = animal["locations"]  # may result in a list
     locations = " and ".join(locations)  # makes list to a string of locations
-    scientific_name = animal["taxonomy"]["scientific_name"]
+
+    try:
+        scientific_name = animal["taxonomy"]["scientific_name"]
+    except KeyError:
+        scientific_name = "Empty"
 
     try:
         animal_type = animal["characteristics"]["type"]
-        return name, diet, locations, animal_type, scientific_name
-
     except KeyError:
         animal_type = "Empty"
-        return name, diet, locations, animal_type, scientific_name
+
+    return name, diet, locations, animal_type, scientific_name
 
 
 def serialize_animal(animals_processed):
@@ -63,12 +84,9 @@ def serialize_animal(animals_processed):
     return output_html
 
 
-def main():
-    """
-    Executes the Data Prep Functions and passes them to the HTML Writing Functions.
-    :return: HTML Code based on the Template as a new file.
-    """
-    animals_data = load_data(filepath)
+def generate_html_page(user_input, animals_data):
+    # animals_data = load_data(filepath)
+
     animal_count = len(animals_data)
     output_html = ""
 
@@ -82,9 +100,24 @@ def main():
     # Replace the placeholder with the generated animal information
     updated_html_content = template_content.replace("__REPLACE_ANIMALS_INFO__", output_html)
 
+    output_folder = "/Users/jonashapp/Documents/GitHub/Pycharm/MS_Codio_Zootopia_With_API/RequestedAnimalWebsites/"
+
     # Write the updated HTML content into a new HTML file
-    with open("animals_filled_with_data.html", "w") as output_file:
+    new_html_doc = os.path.join(output_folder, f"animals_with_api_{user_input.lower()}.html")
+
+    with open(new_html_doc, "w") as output_file:
         output_file.write(updated_html_content)
+
+
+
+def main():
+    """
+    Executes the Data Prep Functions and passes them to the HTML Writing Functions.
+    :return: HTML Code based on the Template as a new file.
+    """
+    requesting_animal = str(input("Please ask for an animal: "))
+    animals_data = request_animal_search(requesting_animal)
+    generate_html_page(requesting_animal, animals_data)
 
 
 if __name__ == "__main__":
