@@ -25,15 +25,15 @@ def get_animal_information(animals_data, number):
     animal = animals_data[number]
     name = animal["name"]
     diet = animal["characteristics"]["diet"]
-    locations = animal["locations"]     #may result in a list
-    locations = ", ".join(locations)    #makes list to a string of locations
+    locations = animal["locations"]     # may result in a list
+    locations = ", ".join(locations)    # makes list to a string of locations
 
     try:
         animal_type = animal["characteristics"]["type"]
-        return (name, diet, locations, animal_type)
+        return name, diet, locations, animal_type
 
     except KeyError:
-        return (name, diet, locations)
+        return name, diet, locations
 
 
 def main():
@@ -48,18 +48,26 @@ def main():
 
     for animal_number in range(0, animal_count):
         animals_processed = get_animal_information(animals_data, animal_number)
+
         if len(animals_processed) == 4:
             name, diet, locations, animal_type = animals_processed
-            output_html += f"Name: {name}\n"
-            output_html += f"Diet: {diet}\n"
-            output_html += f"Locations: {locations}\n"
-            output_html += f"Type: {animal_type}\n\n"
+
+            output_html += f'<li class="cards__item">\n'
+            output_html += f"{name}<br/>\n"
+            output_html += f"Diet: {diet}<br/>\n"
+            output_html += f"Locations: {locations}<br/>\n"
+            output_html += f"Type: {animal_type}<br/>\n"
+            output_html += f'</li>\n\n'
+
 
         elif len(animals_processed) == 3:
             name, diet, locations = animals_processed
-            output_html += f"Name: {name}\n"
-            output_html += f"Diet: {diet}\n"
-            output_html += f"Locations: {locations}\n\n"
+
+            output_html += f'<li class="cards__item">'
+            output_html += f"{name}<br/>\n"
+            output_html += f"Diet: {diet}<br/>\n"
+            output_html += f"Locations: {locations}<br/>\n"
+            output_html += f'</li>\n\n'
 
     with open("animals_template.html", "r") as html_file:
         template_content = html_file.read()
