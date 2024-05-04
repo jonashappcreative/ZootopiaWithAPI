@@ -1,6 +1,7 @@
 import json
 import os
 import data_fetcher
+from dotenv import load_dotenv
 
 
 filepath = "animals_data.json"

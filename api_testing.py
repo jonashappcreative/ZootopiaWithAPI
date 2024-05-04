@@ -1,6 +1,10 @@
 import json
+import os
 import requests
-API_KEY = "wbvM4JFhbZZA1fhJnftgdv6F59dpO1sFkqBkvn9d"
+from dotenv import load_dotenv
+
+load_dotenv()
+API_KEY = os.getenv('API_KEY')
 
 name = input("Please ask for an animal: ")
 
