@@ -1,6 +1,7 @@
 import json
-import requests
 import os
+
+import requests
 
 filepath = "animals_data.json"
 API_KEY = "wbvM4JFhbZZA1fhJnftgdv6F59dpO1sFkqBkvn9d"
@@ -15,7 +16,7 @@ def request_animal_search(search_item):
     api_url = 'https://api.api-ninjas.com/v1/animals?name={}'.format(search_item)
     response = requests.get(api_url, headers={'X-Api-Key': API_KEY})
     if response.status_code == requests.codes.ok:
-        print(response.json())
+        # print(response.json())
         return response.json()
     else:
         print("Error:", response.status_code, response.text)
@@ -99,7 +100,6 @@ def generate_html_page(user_input, animals_data):
 
     # Replace the placeholder with the generated animal information
     updated_html_content = template_content.replace("__REPLACE_ANIMALS_INFO__", output_html)
-
     output_folder = "/Users/jonashapp/Documents/GitHub/Pycharm/MS_Codio_Zootopia_With_API/RequestedAnimalWebsites/"
 
     # Write the updated HTML content into a new HTML file
@@ -108,16 +108,29 @@ def generate_html_page(user_input, animals_data):
     with open(new_html_doc, "w") as output_file:
         output_file.write(updated_html_content)
 
+    print(f"Website was successfully generated to the file animals_with_api_{user_input.lower()}.html")
 
 
 def main():
     """
+    Gets the user input until a search query with valid results is found.
     Executes the Data Prep Functions and passes them to the HTML Writing Functions.
-    :return: HTML Code based on the Template as a new file.
+    :return: Nothing. HTML ist written in another function.
     """
-    requesting_animal = str(input("Please ask for an animal: "))
-    animals_data = request_animal_search(requesting_animal)
-    generate_html_page(requesting_animal, animals_data)
+
+    is_not_valid_animal = True
+
+    while is_not_valid_animal:
+
+        user_request = str(input("Please ask for an animal: "))
+        animals_data = request_animal_search(user_request)
+
+        if not animals_data:
+            print(f"No Animal with the name {user_request} could be found! Please try another one.\n")
+            continue
+        else:
+            generate_html_page(user_request, animals_data)
+            is_not_valid_animal = False
 
 
 if __name__ == "__main__":
