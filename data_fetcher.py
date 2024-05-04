@@ -2,7 +2,7 @@ import requests
 
 API_KEY = "wbvM4JFhbZZA1fhJnftgdv6F59dpO1sFkqBkvn9d"
 
-user_request = "Dog"
+# user_request = "Dog"
 
 
 def fetch_data(user_request):
@@ -31,5 +31,5 @@ def fetch_data(user_request):
         print("Error:", response.status_code, response.text)
 
 
-data = fetch_data(user_request)
-print(data)
+# data = fetch_data(user_request)
+# print(data)

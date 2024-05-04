@@ -1,25 +1,9 @@
 import json
 import os
+import data_fetcher
 
-import requests
 
 filepath = "animals_data.json"
-API_KEY = "wbvM4JFhbZZA1fhJnftgdv6F59dpO1sFkqBkvn9d"
-
-
-def request_animal_search(search_item):
-    """
-    Executes the API Search for the Search Item
-    :param search_item: A string by the user
-    :return: The API Output.
-    """
-    api_url = 'https://api.api-ninjas.com/v1/animals?name={}'.format(search_item)
-    response = requests.get(api_url, headers={'X-Api-Key': API_KEY})
-    if response.status_code == requests.codes.ok:
-        # print(response.json())
-        return response.json()
-    else:
-        print("Error:", response.status_code, response.text)
 
 
 def load_data(file):
@@ -143,7 +127,7 @@ def main():
     while is_not_valid_animal:
 
         user_request = str(input("Please ask for an animal: "))
-        animals_data = request_animal_search(user_request)
+        animals_data = data_fetcher.fetch_data(user_request)
 
         if not animals_data:
             print(f"No Animal with the name {user_request} could be found! Please try another one.\n")
