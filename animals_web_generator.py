@@ -26,7 +26,7 @@ def get_animal_information(animals_data, number):
     name = animal["name"]
     diet = animal["characteristics"]["diet"]
     locations = animal["locations"]     # may result in a list
-    locations = ", ".join(locations)    # makes list to a string of locations
+    locations = " and ".join(locations)    # makes list to a string of locations
 
     try:
         animal_type = animal["characteristics"]["type"]
@@ -53,24 +53,25 @@ def main():
             name, diet, locations, animal_type = animals_processed
 
             output_html += f'<li class="cards__item">\n'
-            output_html += f"{name}<br/>\n"
-            output_html += f"Diet: {diet}<br/>\n"
-            output_html += f"Locations: {locations}<br/>\n"
-            output_html += f"Type: {animal_type}<br/>\n"
+            output_html += f'<div class="card__title">{name}</div>'
+            output_html += f'<p class="card__text">\n'
+            output_html += f"<strong>Location(s):</strong> {locations}<br/>\n"
+            output_html += f"<strong>Type:</strong> {animal_type}<br/>\n"
+            output_html += f"<strong>Diet:</strong> {diet}\n"
             output_html += f'</li>\n\n'
-
 
         elif len(animals_processed) == 3:
             name, diet, locations = animals_processed
 
-            output_html += f'<li class="cards__item">'
-            output_html += f"{name}<br/>\n"
-            output_html += f"Diet: {diet}<br/>\n"
-            output_html += f"Locations: {locations}<br/>\n"
+            output_html += f'<li class="cards__item">\n'
+            output_html += f'<div class="card__title">{name}</div>'
+            output_html += f'<p class="card__text">\n'
+            output_html += f"<strong>Location(s):</strong> {locations}<br/>\n"
+            output_html += f"<strong>Diet:</strong> {diet}\n"
             output_html += f'</li>\n\n'
 
-    with open("animals_template.html", "r") as html_file:
-        template_content = html_file.read()
+        with open("animals_template.html", "r") as html_file:
+            template_content = html_file.read()
 
     # Replace the placeholder with the generated animal information
     updated_html_content = template_content.replace("__REPLACE_ANIMALS_INFO__", output_html)
