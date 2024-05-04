@@ -44,21 +44,32 @@ def main():
     animals_data = load_data(filepath)
     animal_count = len(animals_data)
 
+    output_html = ""
+
     for animal_number in range(0, animal_count):
         animals_processed = get_animal_information(animals_data, animal_number)
         if len(animals_processed) == 4:
             name, diet, locations, animal_type = animals_processed
-            print(name)
-            print(diet)
-            print(locations)
-            print(animal_type)
-            print("---")
+            output_html += f"Name: {name}\n"
+            output_html += f"Diet: {diet}\n"
+            output_html += f"Locations: {locations}\n"
+            output_html += f"Type: {animal_type}\n\n"
+
         elif len(animals_processed) == 3:
             name, diet, locations = animals_processed
-            print(name)
-            print(diet)
-            print(locations)
-            print("---")
+            output_html += f"Name: {name}\n"
+            output_html += f"Diet: {diet}\n"
+            output_html += f"Locations: {locations}\n\n"
+
+    with open("animals_template.html", "r") as html_file:
+        template_content = html_file.read()
+
+    # Replace the placeholder with the generated animal information
+    updated_html_content = template_content.replace("__REPLACE_ANIMALS_INFO__", output_html)
+
+    # Write the updated HTML content into a new HTML file
+    with open("animals_filled_with_data.html", "w") as output_file:
+        output_file.write(updated_html_content)
 
 
 if __name__ == "__main__":
