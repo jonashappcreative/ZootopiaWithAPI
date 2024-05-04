@@ -27,25 +27,25 @@ def get_animal_information(animals_data, number):
     diet = animal["characteristics"]["diet"]
     locations = animal["locations"]  # may result in a list
     locations = " and ".join(locations)  # makes list to a string of locations
+    scientific_name = animal["taxonomy"]["scientific_name"]
 
     try:
         animal_type = animal["characteristics"]["type"]
-        return name, diet, locations, animal_type
+        return name, diet, locations, animal_type, scientific_name
 
     except KeyError:
         animal_type = "Empty"
-        return name, diet, locations, animal_type
+        return name, diet, locations, animal_type, scientific_name
 
 
 def serialize_animal(animals_processed):
     """
     Writes the HTML for each animal.
-    Differenciated between t
-    :param animals_processed: the 3 or 4 animal data objects from get_animal_information()
+    :param animals_processed: the 4 or 5 animal data objects from get_animal_information()
     :return: html string of the serializes animal
     """
     output_html = ''
-    name, diet, locations, animal_type = animals_processed
+    name, diet, locations, animal_type, scientific_name = animals_processed
 
     output_html += f'<li class="cards__item">\n'
     output_html += f'<div class="card__title">{name}</div>'
@@ -55,7 +55,8 @@ def serialize_animal(animals_processed):
     if animal_type != "Empty":
         output_html += f"<strong>Type:</strong> {animal_type}<br/>\n"
 
-    output_html += f"<strong>Diet:</strong> {diet}\n"
+    output_html += f"<strong>Diet:</strong> {diet}<br/>\n"
+    output_html += f"<strong>Scientific Name:</strong> {scientific_name}\n"
     output_html += f'</li>\n\n'
 
     return output_html
