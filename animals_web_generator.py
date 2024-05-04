@@ -111,6 +111,26 @@ def generate_html_page(user_input, animals_data):
     print(f"Website was successfully generated to the file animals_with_api_{user_input.lower()}.html")
 
 
+def generate_html_page_invalid_search(user_input):
+
+    output_html = f"<h2>No Results for {user_input}! Please try another one.</h2>\n"
+
+    with open("animals_template.html", "r") as html_file:
+        template_content = html_file.read()
+
+    # Replace the placeholder with the generated animal information
+    updated_html_content = template_content.replace("__REPLACE_ANIMALS_INFO__", output_html)
+    output_folder = "/Users/jonashapp/Documents/GitHub/Pycharm/MS_Codio_Zootopia_With_API/RequestedAnimalWebsites/"
+
+    # Write the updated HTML content into a new HTML file
+    new_html_doc = os.path.join(output_folder, f"animals_with_api_invalid_search.html")
+
+    with open(new_html_doc, "w") as output_file:
+        output_file.write(updated_html_content)
+
+    print(f"Website was successfully generated to the file animals_with_api_invalid_search.html")
+
+
 def main():
     """
     Gets the user input until a search query with valid results is found.
@@ -127,6 +147,7 @@ def main():
 
         if not animals_data:
             print(f"No Animal with the name {user_request} could be found! Please try another one.\n")
+            generate_html_page_invalid_search(user_request)
             continue
         else:
             generate_html_page(user_request, animals_data)
