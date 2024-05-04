@@ -50,14 +50,15 @@ def serialize_animal(animals_processed):
     output_html += f'<li class="cards__item">\n'
     output_html += f'<div class="card__title">{name}</div>'
     output_html += f'<p class="card__text">\n'
-    output_html += f"<strong>Location(s):</strong> {locations}<br/>\n"
+    output_html += f'<ul class="no-bullets">\n'
+    output_html += f"<li><strong>Location(s):</strong> {locations}</li>\n"
 
     if animal_type != "Empty":
-        output_html += f"<strong>Type:</strong> {animal_type}<br/>\n"
+        output_html += f"<li><strong>Type:</strong> {animal_type}</li>\n"
 
-    output_html += f"<strong>Diet:</strong> {diet}<br/>\n"
-    output_html += f"<strong>Scientific Name:</strong> {scientific_name}\n"
-    output_html += f'</li>\n\n'
+    output_html += f"<li><strong>Diet:</strong> {diet}</li>\n"
+    output_html += f"<li><strong>Scientific Name:</strong> {scientific_name}</li>\n"
+    output_html += f'</ul>\n\n'
 
     return output_html
 
